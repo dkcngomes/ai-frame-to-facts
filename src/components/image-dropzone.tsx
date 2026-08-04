@@ -19,7 +19,6 @@ export function ImageDropzone({ previewUrl, fileName, disabled, onSelect, onClea
 
   const handleFile = useCallback(
     (file: File | undefined) => {
-      console.log("HANDLEFILE", file?.name, file?.type, file?.size);
       if (!file) return;
       const message = validateFile(file);
       setError(message);
