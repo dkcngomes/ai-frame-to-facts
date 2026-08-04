@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UploadRouteImport } from './routes/upload'
 import { Route as ApiAnalyzeImageRouteImport } from './routes/api/analyze-image'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UploadRoute = UploadRouteImport.update({
+  id: '/upload',
+  path: '/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAnalyzeImageRoute = ApiAnalyzeImageRouteImport.update({
@@ -25,27 +31,31 @@ const ApiAnalyzeImageRoute = ApiAnalyzeImageRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/upload': typeof UploadRoute
   '/api/analyze-image': typeof ApiAnalyzeImageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/upload': typeof UploadRoute
   '/api/analyze-image': typeof ApiAnalyzeImageRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/upload': typeof UploadRoute
   '/api/analyze-image': typeof ApiAnalyzeImageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/analyze-image'
+  fullPaths: '/' | '/upload' | '/api/analyze-image'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/analyze-image'
-  id: '__root__' | '/' | '/api/analyze-image'
+  to: '/' | '/upload' | '/api/analyze-image'
+  id: '__root__' | '/' | '/upload' | '/api/analyze-image'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  UploadRoute: typeof UploadRoute
   ApiAnalyzeImageRoute: typeof ApiAnalyzeImageRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/upload': {
+      id: '/upload'
+      path: '/upload'
+      fullPath: '/upload'
+      preLoaderRoute: typeof UploadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/analyze-image': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  UploadRoute: UploadRoute,
   ApiAnalyzeImageRoute: ApiAnalyzeImageRoute,
 }
 export const routeTree = rootRouteImport
