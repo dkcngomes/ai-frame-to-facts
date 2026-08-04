@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as ApiAnalyzeImageRouteImport } from './routes/api/analyze-image'
@@ -18,6 +19,11 @@ import { Route as ArticleIdRouteImport } from './routes/article.$id'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HistoryRoute = HistoryRouteImport.update({
@@ -43,6 +49,7 @@ const ArticleIdRoute = ArticleIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/history': typeof HistoryRoute
   '/upload': typeof UploadRoute
   '/api/analyze-image': typeof ApiAnalyzeImageRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/history': typeof HistoryRoute
   '/upload': typeof UploadRoute
   '/api/analyze-image': typeof ApiAnalyzeImageRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/history': typeof HistoryRoute
   '/upload': typeof UploadRoute
   '/api/analyze-image': typeof ApiAnalyzeImageRoute
@@ -66,12 +75,24 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/history' | '/upload' | '/api/analyze-image' | '/article/$id'
+    | '/'
+    | '/about'
+    | '/history'
+    | '/upload'
+    | '/api/analyze-image'
+    | '/article/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/history' | '/upload' | '/api/analyze-image' | '/article/$id'
+  to:
+    | '/'
+    | '/about'
+    | '/history'
+    | '/upload'
+    | '/api/analyze-image'
+    | '/article/$id'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/history'
     | '/upload'
     | '/api/analyze-image'
@@ -80,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   HistoryRoute: typeof HistoryRoute
   UploadRoute: typeof UploadRoute
   ApiAnalyzeImageRoute: typeof ApiAnalyzeImageRoute
@@ -93,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/history': {
@@ -128,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   HistoryRoute: HistoryRoute,
   UploadRoute: UploadRoute,
   ApiAnalyzeImageRoute: ApiAnalyzeImageRoute,
